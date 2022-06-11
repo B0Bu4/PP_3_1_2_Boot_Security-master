@@ -56,7 +56,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
         return "redirect:/admin";
@@ -64,15 +64,21 @@ public class AdminController {
 
     @GetMapping("user-update/{id}")
     public String updateUserForm(@PathVariable("id") Long id, Model model) {
-        User user = userService.findById(id);
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.findById(id));
         return "users-update";
     }
 
-    @PostMapping("/user-update")
-    public String updateUser(User user) {
-        userService.save(user);
+    @PostMapping("/{id}")
+    public String update(@ModelAttribute("user") User user, @PathVariable("id") long id, @RequestParam(value = "role") String[] roles) {
+        List<Role> roleSet = new ArrayList<>();
+        for(String role : roles) {
+            roleSet.add(new Role(role));
+        }
+        roleRepository.saveAll(roleSet);
+        user.setRoles(roleSet);
+        userRepository.saveAndFlush(user);
         return "redirect:/admin";
     }
+
 
 }

@@ -5,7 +5,7 @@
 
 </head>
 <body>
-<form th:action="@{user-update}" th:object="${user}" method="post">
+<form th:method="POST" th:action="@{'/admin/' + ${user.id}}" th:object="${user}">
 
     <label for="id">ID</label>
     <input readonly type="number" th:field="*{id}" id="id" placeholder="ID">
@@ -34,7 +34,7 @@
         <select size="3" name="role" id="roles" multiple="multiple">
             <option disabled>Roles:</option>
             <option value="ROLE_ADMIN">ADMIN</option>
-            <option value="ROLE_USER">USER</option>
+            <option selected value="ROLE_USER">USER</option>
         </select>
     </label>
     <br/>
