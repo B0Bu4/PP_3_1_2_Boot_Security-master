@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:form="http://www.w3.org/1999/html">
+<title>Table of users</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1>Admin page</h1>
+<br/><br/>
+<div>
+    <!--suppress HtmlDeprecatedAttribute -->
+    <table border="1">
+        <tr>
+            <th>id</th>
+            <th>username</th>
+            <th>password</th>
+            <th>firstname</th>
+            <th>lastname</th>
+            <th>age</th>
+            <th>email</th>
+            <th>roles</th>
+        </tr>
+
+        <tr th:each="user : ${users}">
+            <td th:utext="${user.id}">...</td>
+            <td th:utext="${user.username}">...</td>
+            <td th:utext="${user.password}">...</td>
+            <td th:utext="${user.firstname}">...</td>
+            <td th:utext="${user.lastname}">...</td>
+            <td th:utext="${user.age}">...</td>
+            <td th:utext="${user.email}">...</td>
+            <td th:text="${#strings.setJoin(user.getAuthorities, ',')}">...</td>
+
+            <td>
+                <form th:action="@{admin/user-update/{id}(id=${user.id})}">
+                    <input type="submit" value="EDIT"/>
+                </form>
+            </td>
+            <td>
+                <form th:method="delete" th:action="@{admin/user/{id}(id=${user.id})}">
+                    <input type="submit" value="DELETE"/>
+                </form>
+
+            </td>
+        </tr>
+    </table>
+
+    <br/><br/>
+
+    <form th:action="@{admin/users-add}">
+        <input type="submit" value="CREATE USER">
+    </form>
+
+    <br/>
+
+    <form th:action="@{/logout}">
+        <input type="submit" value="LOGOUT"/>
+    </form>
+
+</div>
+</body>
+</html>
